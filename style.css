@@ -47,7 +47,7 @@ header {
   align-items: flex-end;
 }
 
-#login-button {
+.login-button {
   color: white;
   background: red;
   padding: 10px 40px;
@@ -69,7 +69,7 @@ footer a {
   font-weight: bold;
 }
 
-.calendar {
+.container {
   width: calc(7.5 * var(--width-unit));
   min-height: calc(9 * var(--height-unit));
   display: flex;
@@ -93,8 +93,7 @@ footer a {
   margin-bottom: 10px;
   color: white;
 }
-#previous-button,
-#next-button {
+.change-month-button {
   width: calc(1 * var(--width-unit));
   margin-top: 4px;
   padding: calc(0.35 * var(--width-unit));
@@ -102,16 +101,16 @@ footer a {
   cursor: pointer;
 }
 
-#month {
+.month-to-display {
   width: calc(5 * var(--width-unit));
   font-size: 2.25rem;
   margin-right: auto;
   margin-left: 10px;
 }
-#month::first-letter {
+.month-to-display::first-letter {
   text-transform: uppercase;
 }
-.calendar-inner {
+.calendar {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -129,7 +128,7 @@ footer a {
   width: calc(7 * var(--width-unit));
   height: var(--height-unit);
 }
-.all-days {
+.days-to-display {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -139,7 +138,7 @@ footer a {
   min-height: calc(6 * var(--height-unit));
 }
 .weekday-outer,
-.day-outer,
+.active-day-outer,
 .complement-outer {
   background: none;
   width: var(--width-unit);
@@ -167,7 +166,7 @@ footer a {
   color: black;
   font-size: 2rem;
 }
-.day-outer.active .day-inner {
+.active-day-outer.active .day-inner {
   background: red;
   color: white;
   font-size: 2rem;
@@ -186,10 +185,10 @@ footer a {
   .day-inner {
     font-size: 1.75rem;
   }
-  #month {
+  .month-to-display {
     font-size: 1.75rem;
   }
-  #login-button {
+  .login-button {
     padding: 7px 30px;
     border-radius: 40px;
     font-size: 1rem;
@@ -223,10 +222,10 @@ footer a {
   .weekday-inner {
     font-size: 0.75rem;
   }
-  #month {
+  .month-to-display {
     font-size: 1.25rem;
   }
-  #login-button {
+  .login-button {
     padding: 5px 25px;
     border-radius: 40px;
     font-size: 0.75rem;
@@ -244,7 +243,7 @@ footer a {
   .weekday-inner {
     font-size: 0.675rem;
   }
-  #month {
+  .month-to-display {
     font-size: 1rem;
   }
 }
@@ -259,7 +258,7 @@ footer a {
   .weekday-inner {
     font-size: 0.5rem;
   }
-  #month {
+  .month-to-display {
     font-size: 0.875rem;
   }
 }

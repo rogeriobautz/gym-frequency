@@ -4,7 +4,7 @@ let displayMonth = now.getMonth();
 let displayYear = now.getFullYear();
 
 function removeActiveDays() {
-  for (let i of document.getElementsByClassName('day-outer')) {
+  for (let i of document.getElementsByClassName('active-day-outer')) {
     i.classList.remove('active');
   }
 }
@@ -22,49 +22,51 @@ function totalDaysMonth(year, month) {
 }
 
 monthName = new Array(
-  'janeiro',
-  'fevereiro',
-  'março',
-  'abril',
-  'maio',
-  'junho',
-  'julho',
-  'agosto',
-  'setembro',
-  'outubro',
-  'novembro',
-  'dezembro'
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december'
 );
 
 function updateDisplay() {
   const date = new Date(displayYear, displayMonth, 1);
 
-  document.getElementById('month').innerHTML =
+  document.getElementById('month-to-display').innerHTML =
     monthName[displayMonth] + ' de ' + displayYear;
 
-  //Days of the actual month
+  //Days of the month last displayed
   const dayOne = document.getElementById('day1');
   dayOne.style.marginLeft = '0px'; //remove margin before cloning
 
-  let allDays = document.getElementsByClassName('day-outer').length;
+  let ActiveDays = document.getElementsByClassName('active-day-outer').length;
   const daysOfTheMonth = totalDaysMonth(displayYear, displayMonth);
 
   while (document.getElementsByClassName('complement-outer').length) {
     document.getElementsByClassName('complement-outer')[0].remove();
   } //remove the old days before and after to use removeChild below
 
-  while (allDays != daysOfTheMonth) {
-    if (allDays < daysOfTheMonth) {
+  while (ActiveDays != daysOfTheMonth) {
+    if (ActiveDays < daysOfTheMonth) {
       const clone = dayOne.cloneNode(true);
-      clone.id = 'day' + (allDays + 1);
-      clone.children[0].children[0].innerHTML = allDays + 1;
+      clone.id = 'day' + (ActiveDays + 1);
+      clone.children[0].children[0].innerHTML = ActiveDays + 1;
       dayOne.parentNode.appendChild(clone);
-      allDays += 1;
+      ActiveDays += 1;
     } else {
       document
-        .getElementsByClassName('all-days')[0]
-        .removeChild(document.getElementsByClassName('all-days')[0].lastChild);
-      allDays -= 1;
+        .getElementsByClassName('days-to-display')[0]
+        .removeChild(
+          document.getElementsByClassName('days-to-display')[0].lastChild
+        );
+      ActiveDays -= 1;
     }
   }
 
@@ -95,14 +97,14 @@ function updateDisplay() {
     clone.children[0].children[0].innerHTML = idDaysBefore;
     firstDay.parentNode.insertBefore(clone, firstDay);
     idDaysBefore -= 1;
-    firstDay = document.getElementsByClassName('all-days')[0].firstChild;
+    firstDay = document.getElementsByClassName('days-to-display')[0].firstChild;
   }
 
   //Days after the actual month - not clickable
   const daysAfter = 42 - (daysOfTheMonth + daysBefore());
   //6 rows x 7 columns=42
   let idDaysAfter = 1;
-  let lastDay = document.getElementsByClassName('all-days')[0].lastChild;
+  let lastDay = document.getElementsByClassName('days-to-display')[0].lastChild;
 
   while (idDaysAfter <= daysAfter) {
     const clone = dayOne.cloneNode(true);
@@ -111,7 +113,7 @@ function updateDisplay() {
     clone.children[0].children[0].innerHTML = idDaysAfter;
     lastDay.parentNode.appendChild(clone);
     idDaysAfter += 1;
-    lastDay = document.getElementsByClassName('all-days')[0].lastChild;
+    lastDay = document.getElementsByClassName('days-to-display')[0].lastChild;
   }
 
   //check if exists a day with the same number as today
@@ -128,7 +130,7 @@ function updateDisplay() {
 
 updateDisplay(); //Initial date is actual date
 
-let dayMon = document.getElementsByClassName('day-outer');
+let dayMon = document.getElementsByClassName('active-day-outer');
 //active days
 for (let i = 0; i < dayMon.length; i++) {
   dayMon[i].addEventListener('click', () => {
@@ -137,20 +139,22 @@ for (let i = 0; i < dayMon.length; i++) {
   });
 }
 
-document.getElementById('previous-button').addEventListener('click', () => {
-  //previous month
-  if (displayMonth == 0) {
-    displayYear -= 1;
-    displayMonth = 11;
-  } else displayMonth -= 1;
-  updateDisplay();
-  /* console.log(
+document
+  .getElementById('previous-month-button')
+  .addEventListener('click', () => {
+    //previous month
+    if (displayMonth == 0) {
+      displayYear -= 1;
+      displayMonth = 11;
+    } else displayMonth -= 1;
+    updateDisplay();
+    /* console.log(
     displayMonth + ' - ' + monthName[displayMonth] + ' de ' + displayYear
   ); */
-  removeActiveDays(); //remove active days until the database is not set
-});
+    removeActiveDays(); //remove active days until the database is not set
+  });
 
-document.getElementById('next-button').addEventListener('click', () => {
+document.getElementById('next-month-button').addEventListener('click', () => {
   //next month
   if (displayMonth == 11) {
     displayYear += 1;
@@ -163,7 +167,7 @@ document.getElementById('next-button').addEventListener('click', () => {
   removeActiveDays(); //remove active days until the database is not set
 });
 
-document.getElementById('month').addEventListener('click', () => {
+document.getElementById('month-to-display').addEventListener('click', () => {
   //open popup with all months of the year
   console.log('month click');
 });

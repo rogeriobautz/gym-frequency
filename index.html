@@ -5,29 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Gym Log</title>
+    <title>Gym Frequency</title>
   </head>
   <body>
     <header>
-      <a href="#" id="login-button">Login</a>
+      <a href="#" class="login-button" id="login-button">Login</a>
     </header>
-    <main class="calendar">
+    <main class="container">
       <div class="selector">
-        <p id="month">Dezembro de 1986</p>
+        <p class="month-to-display" id="month-to-display">Dezembro de 1986</p>
         <img
           src="./images/left-arrow.png"
           alt="left arrow"
-          class="icon"
-          id="previous-button"
+          class="icon change-month-button"
+          id="previous-month-button"
         />
         <img
           src="./images/right-arrow.png"
           alt="right arrow"
-          class="icon"
-          id="next-button"
+          class="icon change-month-button"
+          id="next-month-button"
         />
       </div>
-      <div class="calendar-inner">
+      <div class="calendar">
         <div class="calendar-header">
           <div class="weekday-outer day-off">
             <div class="weekday-inner"><p>SUN</p></div>
@@ -51,8 +51,8 @@
             <div class="weekday-inner"><p>SAT</p></div>
           </div>
         </div>
-        <div class="all-days">
-          <div class="day-outer" id="day1">
+        <div class="days-to-display">
+          <div class="active-day-outer" id="day1">
             <div class="day-inner"><p>1</p></div>
           </div>
         </div>
@@ -61,8 +61,11 @@
     <footer>
       <p class="credits">
         Developed by
-        <a href="https://twitter.com/rogeriobautz" target="_blank"
-          >Rogerio Bautz</a
+        <a
+          href="https://twitter.com/rogeriobautz"
+          target="_blank"
+          class="link social"
+          >Rogério Bautz</a
         >
       </p>
     </footer>
