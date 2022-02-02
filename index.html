@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Gym Log</title>
+  </head>
+  <body>
+    <header>
+      <a href="#" id="login-button">Login</a>
+    </header>
+    <main class="calendar">
+      <div class="selector">
+        <p id="month">Dezembro de 1986</p>
+        <img
+          src="./images/left-arrow.png"
+          alt="left arrow"
+          class="icon"
+          id="previous-button"
+        />
+        <img
+          src="./images/right-arrow.png"
+          alt="right arrow"
+          class="icon"
+          id="next-button"
+        />
+      </div>
+      <div class="calendar-inner">
+        <div class="calendar-header">
+          <div class="weekday-outer day-off">
+            <div class="weekday-inner"><p>SUN</p></div>
+          </div>
+          <div class="weekday-outer">
+            <div class="weekday-inner"><p>MON</p></div>
+          </div>
+          <div class="weekday-outer">
+            <div class="weekday-inner"><p>TUE</p></div>
+          </div>
+          <div class="weekday-outer">
+            <div class="weekday-inner"><p>WED</p></div>
+          </div>
+          <div class="weekday-outer">
+            <div class="weekday-inner"><p>THU</p></div>
+          </div>
+          <div class="weekday-outer">
+            <div class="weekday-inner"><p>FRI</p></div>
+          </div>
+          <div class="weekday-outer">
+            <div class="weekday-inner"><p>SAT</p></div>
+          </div>
+        </div>
+        <div class="all-days">
+          <div class="day-outer" id="day1">
+            <div class="day-inner"><p>1</p></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p class="credits">
+        Developed by
+        <a href="https://twitter.com/rogeriobautz" target="_blank"
+          >Rogerio Bautz</a
+        >
+      </p>
+    </footer>
+  </body>
+  <script src="main.js"></script>
+</html>
