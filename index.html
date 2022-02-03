@@ -13,21 +13,21 @@
     </header>
     <main class="container">
       <div class="selector">
-        <p class="month-to-display" id="month-to-display">Dezembro de 1986</p>
+        <p class="month-to-display" id="month-to-display">December 1986</p>
         <img
           src="./images/left-arrow.png"
           alt="left arrow"
-          class="icon change-month-button"
-          id="previous-month-button"
+          class="icon change-button"
+          id="previous-button"
         />
         <img
           src="./images/right-arrow.png"
           alt="right arrow"
-          class="icon change-month-button"
-          id="next-month-button"
+          class="icon change-button"
+          id="next-button"
         />
       </div>
-      <div class="calendar">
+      <div class="calendar-days calendar-box">
         <div class="calendar-header">
           <div class="weekday-outer day-off">
             <div class="weekday-inner"><p>SUN</p></div>
@@ -55,6 +55,16 @@
           <div class="active-day-outer" id="day1">
             <div class="day-inner"><p>1</p></div>
           </div>
+        </div>
+      </div>
+      <div class="calendar-months calendar-box">
+        <div class="month-outer" id="month-outer1">
+          <div class="month-inner"><p>1</p></div>
+        </div>
+      </div>
+      <div class="calendar-years calendar-box">
+        <div class="year-outer" id="year-outer1">
+          <div class="year-inner"><p>1986</p></div>
         </div>
       </div>
     </main>

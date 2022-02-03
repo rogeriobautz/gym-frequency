@@ -1,9 +1,61 @@
-console.log(`teste0`);
 now = new Date();
 let displayMonth = now.getMonth();
 let displayYear = now.getFullYear();
+let whatToChange = 'month';
+const monthToDisplay = document.getElementById('month-to-display');
+monthName = new Array(
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december'
+);
 
-function removeActiveDays() {
+function highlightActualDay() {
+  //check if exists a day with the same number as today
+  //removing a class from a non-existing object returns an error
+  const dayOfToday = document.getElementById('day' + now.getDate());
+  if (dayOfToday) {
+    if (displayYear == now.getFullYear() && displayMonth == now.getMonth())
+      dayOfToday.children[0].classList.add('highlight');
+    // add highlight to today
+    else dayOfToday.children[0].classList.remove('highlight'); //remove highlight from today
+  }
+}
+
+function highlightActualMonth() {
+  let actualMonth =
+    document.getElementsByClassName('month-outer')[now.getMonth()];
+  if (displayYear == now.getFullYear()) {
+    actualMonth.children[0].classList.add('highlight');
+  } else actualMonth.children[0].classList.remove('highlight');
+}
+
+function highlightActualYear() {
+  for (i = 0; i < 12; i++) {
+    let getYear = document.getElementsByClassName('year-outer')[i];
+    if (
+      parseInt(getYear.children[0].children[0].innerHTML) == now.getFullYear()
+    ) {
+      getYear.children[0].classList.add('highlight');
+    } else getYear.children[0].classList.remove('highlight');
+  }
+}
+
+function displayDecade(year) {
+  let lowerYear = year - (year % 10);
+  let upperYear = lowerYear + 9;
+  return lowerYear + '-' + upperYear;
+}
+
+function removeWorkoutDays() {
   for (let i of document.getElementsByClassName('active-day-outer')) {
     i.classList.remove('active');
   }
@@ -21,26 +73,11 @@ function totalDaysMonth(year, month) {
   } else return 31;
 }
 
-monthName = new Array(
-  'january',
-  'february',
-  'march',
-  'april',
-  'may',
-  'june',
-  'july',
-  'august',
-  'september',
-  'october',
-  'november',
-  'december'
-);
-
 function updateDisplay() {
-  const date = new Date(displayYear, displayMonth, 1);
+  const firstDayOfTheMonth = new Date(displayYear, displayMonth, 1);
 
   document.getElementById('month-to-display').innerHTML =
-    monthName[displayMonth] + ' de ' + displayYear;
+    monthName[displayMonth] + ' ' + displayYear;
 
   //Days of the month last displayed
   const dayOne = document.getElementById('day1');
@@ -72,10 +109,11 @@ function updateDisplay() {
 
   //Days before the actual month - not clickable
   const daysBefore = () => {
-    //if (date.getDay() == 0) return 7;
+    //if (firstDayOfTheMonth.getDay() == 0) return 7;
     //else
-    return date.getDay();
+    return firstDayOfTheMonth.getDay();
   };
+
   let yearBefore = displayYear;
   const monthBefore = () => {
     if (displayMonth == 0) {
@@ -116,58 +154,145 @@ function updateDisplay() {
     lastDay = document.getElementsByClassName('days-to-display')[0].lastChild;
   }
 
-  //check if exists a day with the same number as today
-  //removing a class from a non-existing object returns an error
-  const todayHigh = document.getElementById('day' + now.getDate());
-  if (todayHigh) {
-    if (displayYear == now.getFullYear() && displayMonth == now.getMonth())
-      todayHigh.children[0].classList.add('today');
-    // add highlight to today
-    else todayHigh.children[0].classList.remove('today'); //remove highlight from today
-  }
+  highlightActualDay();
+
   return; //updateDisplay return
 }
 
-updateDisplay(); //Initial date is actual date
+//fill calendar days
+updateDisplay();
 
-let dayMon = document.getElementsByClassName('active-day-outer');
-//active days
-for (let i = 0; i < dayMon.length; i++) {
-  dayMon[i].addEventListener('click', () => {
-    console.log(dayMon[i].children[0].children[0].innerHTML);
-    dayMon[i].classList.toggle('active');
+//fill calendar months
+let monthOne = document.getElementById('month-outer1');
+monthOne.children[0].children[0].innerHTML = monthName[0].substring(0, 3);
+
+for (let i = 1; i < 12; i++) {
+  const clone = monthOne.cloneNode(true);
+  clone.id = 'month-outer' + (i + 1);
+  document.getElementsByClassName('calendar-months')[0].appendChild(clone);
+  document.getElementsByClassName('month-inner')[i].children[0].innerHTML =
+    monthName[i].substring(0, 3);
+}
+
+//fill calendar years
+let yearOne = document.getElementById('year-outer1');
+yearOne.children[0].children[0].innerHTML = displayYear - (displayYear % 10);
+
+for (let i = 1; i < 12; i++) {
+  const clone = yearOne.cloneNode(true);
+  clone.id = 'year-outer' + (i + 1);
+  document.getElementsByClassName('calendar-years')[0].appendChild(clone);
+  document.getElementsByClassName('year-inner')[i].children[0].innerHTML =
+    displayYear - (displayYear % 10) + i;
+}
+
+function updateCalendarYears() {
+  for (let i = 0; i < 12; i++) {
+    document.getElementsByClassName('year-inner')[i].children[0].innerHTML =
+      displayYear - (displayYear % 10) + i;
+  }
+}
+
+//mark what days you went to the gym
+let daysOfTheMonth = document.getElementsByClassName('active-day-outer');
+for (let i = 0; i < daysOfTheMonth.length; i++) {
+  daysOfTheMonth[i].addEventListener('click', () => {
+    daysOfTheMonth[i].classList.toggle('active');
   });
 }
 
-document
-  .getElementById('previous-month-button')
-  .addEventListener('click', () => {
-    //previous month
+//previous button
+document.getElementById('previous-button').addEventListener('click', () => {
+  if (whatToChange == 'month') {
     if (displayMonth == 0) {
       displayYear -= 1;
       displayMonth = 11;
     } else displayMonth -= 1;
     updateDisplay();
-    /* console.log(
-    displayMonth + ' - ' + monthName[displayMonth] + ' de ' + displayYear
-  ); */
-    removeActiveDays(); //remove active days until the database is not set
-  });
+  } else if (whatToChange == 'year') {
+    displayYear -= 1;
+    monthToDisplay.innerHTML = displayYear;
+    highlightActualMonth();
+  } else if (whatToChange == 'decade') {
+    displayYear -= 10;
+    monthToDisplay.innerHTML = displayDecade(displayYear);
+    updateCalendarYears();
+    highlightActualYear();
+  }
 
-document.getElementById('next-month-button').addEventListener('click', () => {
-  //next month
-  if (displayMonth == 11) {
+  removeWorkoutDays(); //remove workout days until the database is not set
+});
+
+//next button
+document.getElementById('next-button').addEventListener('click', () => {
+  if (whatToChange == 'month') {
+    if (displayMonth == 11) {
+      displayYear += 1;
+      displayMonth = 0;
+    } else displayMonth += 1;
+    updateDisplay();
+  } else if (whatToChange == 'year') {
     displayYear += 1;
-    displayMonth = 0;
-  } else displayMonth += 1;
-  updateDisplay();
-  /* console.log(
-    displayMonth + ' - ' + monthName[displayMonth] + ' de ' + displayYear
-  ); */
-  removeActiveDays(); //remove active days until the database is not set
+    monthToDisplay.innerHTML = displayYear;
+    highlightActualMonth();
+  } else if (whatToChange == 'decade') {
+    displayYear += 10;
+    monthToDisplay.innerHTML = displayDecade(displayYear);
+    updateCalendarYears();
+    highlightActualYear();
+  }
+
+  removeWorkoutDays(); //remove workout days until the database is not set
 });
 
-document.getElementById('month-to-display').addEventListener('click', () => {
-  //open popup with all months of the year
-  console.log('month click');
+//First click: display all months of the year
+//Second click: display 12 years
+monthToDisplay.addEventListener('click', () => {
+  if (whatToChange == 'month') {
+    whatToChange = 'year';
+    document
+      .getElementsByClassName('calendar-months')[0]
+      .classList.add('active');
+    monthToDisplay.innerHTML = displayYear;
+    highlightActualMonth();
+  } else if (whatToChange == 'year') {
+    whatToChange = 'decade';
+    document
+      .getElementsByClassName('calendar-years')[0]
+      .classList.add('active');
+    monthToDisplay.innerHTML = displayDecade(displayYear);
+    highlightActualYear();
+  }
 });
+
+//choose what month to display
+for (let i = 0; i < 12; i++) {
+  document
+    .getElementsByClassName('month-outer')
+    [i].addEventListener('click', () => {
+      displayMonth = i;
+      document
+        .getElementsByClassName('calendar-months')[0]
+        .classList.remove('active');
+      whatToChange = 'month';
+      updateDisplay();
+    });
+}
+
+//choose what year to display
+for (let i = 0; i < 12; i++) {
+  document
+    .getElementsByClassName('year-outer')
+    [i].addEventListener('click', () => {
+      displayYear = parseInt(
+        document.getElementsByClassName('year-outer')[i].children[0].children[0]
+          .innerHTML
+      );
+      document
+        .getElementsByClassName('calendar-years')[0]
+        .classList.remove('active');
+      whatToChange = 'year';
+      highlightActualMonth();
+      monthToDisplay.innerHTML = displayYear;
+    });
+}

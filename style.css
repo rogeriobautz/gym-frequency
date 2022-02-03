@@ -80,8 +80,15 @@ footer a {
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(16px) saturate(180%);
+  background-image: linear-gradient(
+    to bottom,
+    grey 0%,
+    rgba(255, 255, 255, 0) calc(3 * var(--height-unit))
+  );
   color: white;
   border-radius: 10px;
+  position: relative;
+  overflow: hidden;
 }
 
 .selector {
@@ -93,7 +100,7 @@ footer a {
   margin-bottom: 10px;
   color: white;
 }
-.change-month-button {
+.change-button {
   width: calc(1 * var(--width-unit));
   margin-top: 4px;
   padding: calc(0.35 * var(--width-unit));
@@ -102,25 +109,56 @@ footer a {
 }
 
 .month-to-display {
-  width: calc(5 * var(--width-unit));
+  /* width: calc(3 * var(--width-unit)); */
   font-size: 2.25rem;
   margin-right: auto;
   margin-left: 10px;
+  cursor: pointer;
 }
 .month-to-display::first-letter {
   text-transform: uppercase;
 }
-.calendar {
+
+.calendar-box {
+  width: calc(7.2 * var(--width-unit));
+  min-height: calc(7.4 * var(--height-unit));
+  border-radius: 10px;
+  padding-block: calc(0.2 * var(--height-unit));
+  overflow: hidden;
+}
+
+.calendar-days {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: calc(7.2 * var(--width-unit));
-  min-height: calc(5 * var(--height-unit));
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding-block: calc(0.2 * var(--height-unit));
+  position: relative;
 }
+
+.calendar-months,
+.calendar-years {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  margin-top: 150%;
+  transition: 0.5s;
+}
+
+.calendar-months.active,
+.calendar-years.active {
+  margin-top: calc(
+    (0.7 * var(--height-unit)) + 10px
+  ); /* height + margin bottom of .selector*/
+}
+
+.calendar-months,
+.calendar-years {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(3, 33%);
+  padding-inline: 10px;
+}
+
 .calendar-header {
   display: flex;
   justify-content: flex-start;
@@ -146,7 +184,20 @@ footer a {
   padding: 2px;
   flex-shrink: 0;
 }
+
+.month-outer,
+.year-outer {
+  padding: 2px;
+  cursor: pointer;
+}
+
+.month-outer p,
+.year-outer p {
+  text-transform: uppercase;
+}
 .weekday-inner,
+.month-inner,
+.year-inner,
 .day-inner {
   width: 100%;
   height: 100%;
@@ -161,6 +212,8 @@ footer a {
   background: darkgrey;
   font-size: 1.25rem;
 }
+.month-inner,
+.year-inner,
 .day-inner {
   background: lightblue;
   color: black;
@@ -169,13 +222,12 @@ footer a {
 .active-day-outer.active .day-inner {
   background: red;
   color: white;
-  font-size: 2rem;
 }
 .complement-outer .day-inner {
   background: rgba(255, 255, 255, 0.1);
   color: lightgrey;
 }
-.today {
+.highlight {
   background: lightgreen;
 }
 @media (max-width: 1023px) {
@@ -185,6 +237,7 @@ footer a {
   .day-inner {
     font-size: 1.75rem;
   }
+
   .month-to-display {
     font-size: 1.75rem;
   }
@@ -210,11 +263,20 @@ footer a {
   .weekday-inner {
     font-size: 1rem;
   }
+  .calendar-months,
+  .calendar-years {
+    margin-top: 250%;
+  }
 }
 @media (max-width: 600px) {
   :root {
     --width-unit: 60px;
     --height-unit: 60px;
+  }
+  .calendar-months,
+  .calendar-years {
+    grid-template-rows: repeat(4, 25%);
+    grid-template-columns: repeat(3, 33%);
   }
   .day-inner {
     font-size: 1.25rem;
@@ -236,6 +298,10 @@ footer a {
   :root {
     --width-unit: 45px;
     --height-unit: 45px;
+  }
+  .calendar-months p,
+  .calendar-years p {
+    font-size: 1.5rem;
   }
   .day-inner {
     font-size: 1.125rem;
